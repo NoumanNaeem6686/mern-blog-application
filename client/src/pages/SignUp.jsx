@@ -1,12 +1,13 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate= useNavigate()
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -17,8 +18,8 @@ const SignUp = () => {
       return setErrorMessage("please fill all the fields");
     }
     try {
-      setLoading(true)
-      setErrorMessage(null)
+      setLoading(true);
+      setErrorMessage(null);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -30,9 +31,8 @@ const SignUp = () => {
         return setErrorMessage(data.message);
       }
       setLoading(false);
-      if(res.ok){
-
-        navigate('/sign-in')
+      if (res.ok) {
+        navigate("/sign-in");
       }
     } catch (error) {
       console.log("Error in Signup");
@@ -86,20 +86,25 @@ const SignUp = () => {
                 onChange={handleChange}
               />
             </div>
-            <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
-             {
-              loading ? (
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
                 <>
-                <Spinner size='sm'/>
-                <span className="pl-3">Loading...</span>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Loading...</span>
                 </>
-              ) :'Sign Up'
-             }
+              ) : (
+                "Sign Up"
+              )}
             </Button>
+            <OAuth />
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Have an account?</span>
-            <Link to={"/login"} className="text-blue-500">
+            <Link to={"/sign-in"} className="text-blue-500">
               Sign In
             </Link>
           </div>
